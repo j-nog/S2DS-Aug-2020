@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<title>Legal Document Extraction - NationBetter</title>
+  </head>
+  <body>
+	<div class="container-fluid">
+	  <div class="row clearfix">
+		  <div class="col-sm-2 d-flex flex-wrap align-items-center">
+		    <a href="http://nationbetter.uk/" target="_blank">
+			<img src="{{ url_for('static', filename='logo.jpg') }}" alt="NationBetter" class="img-responsive">
+			</a>
+		  </div>		  
+		  <div class="col-sm-10">
+			<p><h2>Legal Document Extraction</h2></p>
+		  </div>
+	  </div>
+	  <br>
+	  <div class="row clearfix">			
+		<div class="col-sm-12">
+			<form action="/" method="POST">
+			  <div class="form-group">
+				<label for="keywords">Custom keywords</label>
+				<input type="text" name="keywords" class="form-control form-control-sm" aria-describedby="keywordsHelp" placeholder="Set your query leywords">
+				<small id="keywordsHelp" class="form-text text-muted">Type set of keywords to be searched through corpus (comma seperated if more than one)</small>
+			  </div>
+			  <div class="form-row">
+				<!-- first group -->
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Immigration Status</label>
+				  <select name="select_immigration_status" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_immigration_status %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Region</label>
+				  <select name="select_region" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_region %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>				
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Role</label>
+				  <select name="select_role" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_role %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<!-- second group -->
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Company Type</label>
+				  <select name="select_company_type" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_company_type %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Company Body</label>
+				  <select name="select_company_body" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_company_body %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Regulatory Body</label>
+				  <select name="select_regulatory_body" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_regulatory_body %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<!-- third group -->
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Education</label>
+				  <select name="select_education" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_education %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Profession</label>
+				  <select name="select_profession" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_profession %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>				
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Skill Level</label>
+				  <select name="select_skill_level" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_skill_level %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<!-- fourth group -->				
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Position</label>
+				  <select name="select_position" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_position %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-4">
+				  <label for="inputState">Relation</label>
+				  <select name="select_relation" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_relation %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-4">
+				  <label for="inputState">General</label>
+				  <select name="select_general" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_general %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<!-- fifth group -->
+				<div class="form-group col-sm-6">
+				  <label for="inputState">SOC Codes</label>
+				  <select name="select_SOC_codes" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_SOC_codes %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="form-group col-sm-6">
+				  <label for="inputState">SOC Titles</label>
+				  <select name="select_SOC_titles" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_SOC_titles %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+				</div>
+				<div class="col-sm-6">
+				<!-- None -->
+			    </div>
+			    <div class="col-sm-2">
+				  <label for="inputState"><span class="align-bottom">Document Classification</span></label>
+			    </div>
+			    <div class="col-sm-3">
+				  <select name="select_taxonomy" id="inputState" class="form-control form-control-sm">
+					<option selected>Choose...</option>
+					<option>...</option>
+						{% for each in list_taxonomy %}
+						  <option value="{{each}}">{{each}}</option>
+						{% endfor %}
+				  </select>
+			    </div>
+			    <div class="col-sm-1">
+				  <button type="submit" class="btn btn-primary btn-sm float-right">Submit</button>	  
+			    </div>
+			  </div>
+			  </div>			  
+			</form>
+		</div>
+	  </div>
+	</div>
+	<br><br><br>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
