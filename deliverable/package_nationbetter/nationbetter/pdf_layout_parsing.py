@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+"""
+import pandas as pd
+from nationbetter.pdf_layout_parsing import get_lines_and_info
+
+dict_layout = get_lines_and_info(""abc.pdf")
+df_layout = pd.DataFrame(dict_layout)
+"""
+
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTTextBoxHorizontal, LTChar
+import os
+import re
+import pickle
+from .file_handler import get_inner_folder, write_files, download_pdfs
+#set maxpage to number to only parse part of file for debugging
+def get_lines_and_info(url,path,out_type='pickle'):
+    """
+    Functions for creating and restructuring dicts from pdf files for
+    backwards engineering the layout structure from the pdfminer.six layout
+    object (LTTextBox etc. see tree in:
+    https://pdfminersix.readthedocs.io/en/latest/topic/converting_pdf_to_text.html
+    
+    Function that takes a pdf file and runs it trough pdfminer.six to parse the
+    LTTextBox objects of the LAParams class returning a dict 
+    containing the page numbers, box numbers, box position, line numbers, font
+    size of current and previous line in the text. 
+    """
+    #file_name = nationbetter.download_pdfs(url,path)
+    in_file = download_pdfs(url,path)
+    write_path = get_inner_folder(path,'raw_pdf_dicts')
+    print('Extracting contents of {}, to dict this might take a minute'\
+            .format(in_file))
+                
+    pdf_file = open(in_file,'rb')
+    columns = ['url','page_no', 'box_no', 'box_pos', 'line_no', 'line_pos', 
+               'previous_linefontsize', 'curr_linefontsize', 'text']
+
+    data = {key : [] for key in columns}
+    fontsize = None #Set fontsize to none for previous_linefontsize on 1st entry
+    pagenumber = 0
+
+    # parse over all textboxes and lines contained in them
+    for page_layout in extract_pages(pdf_file):
+        pagenumber += 1
+        for element in page_layout:
+            if isinstance(element, LTTextBoxHorizontal):
+                lineno=0
+                for text_line in element:
+                    lineno += 1
+                    #output line data
+                    data['url'].append(url)
+                    data['page_no'].append(pagenumber)
+                    data['box_no'].append(element.index)
+                    data['box_pos'].append(element.bbox)
+                    data['line_no'].append(lineno)
+                    data['previous_linefontsize'].append(fontsize)
+                    data['line_pos'].append(text_line.bbox)
+                    data['text'].append(text_line.get_text())
+                    if not text_line.get_text().isspace():
+                        #Recording fontsize of first nonspace character in line
+                        for character in text_line:
+                            if isinstance(character,LTChar):
+                                if character.get_text().isspace() :
+                                    continue
+                                else:
+                                    fontsize = character.size
+                                    data['curr_linefontsize'].append(fontsize)
+                                    break
+                    else:
+                        data['curr_linefontsize'].append(None)
+    pdf_file.close() 
+    write_files(data,write_path,in_file,'pickle')
